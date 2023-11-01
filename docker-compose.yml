@@ -1,0 +1,68 @@
+version: '3.7'
+services:
+  form:
+    build:
+      context: .
+      dockerfile: ./apps/form/Dockerfile
+      target: development
+    command: npm run start:dev form
+    env_file:
+      - ./apps/form/.env
+    depends_on:
+      - billing
+      - postgres
+      - rabbitmq
+    volumes:
+      - .:/usr/src/app
+      - /usr/src/app/node_modules
+    ports:
+      - '3000:3000'
+    networks:
+      - atlan
+  billing:
+    build:
+      context: .
+      dockerfile: ./apps/sms/Dockerfile
+      target: development
+    command: npm run start:dev sms
+    env_file:
+      - ./apps/sms/.env
+    depends_on:
+      - postgres
+      - rabbitmq
+    volumes:
+      - .:/usr/src/app
+      - /usr/src/app/node_modules
+    networks:
+      - atlan
+  postgres:
+    image: postgres:14
+    container_name: postgres
+    restart: always
+    ports:
+      - '5434:5432'
+    # env_file:
+    #   - ./.env
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_DB: atlan
+    volumes:
+      - postgres:/var/lib/postgresql/data
+      - ./init:/docker-entrypoint-initdb.d/
+    networks:
+      - atlan
+    
+  rabbitmq:
+    image: rabbitmq
+    ports:
+      - '5672:5672'
+    networks:
+      - atlan
+
+volumes:
+  postgres:
+    name: atlan
+
+networks:
+  atlan:
