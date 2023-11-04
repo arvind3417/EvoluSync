@@ -1,11 +1,12 @@
 import { Module } from "@nestjs/common";
 import { FormController } from "./form.controller";
-import { FormService } from "./form.service";
+import { FormService } from "./form.service"; 
 
 import { ConfigModule } from "@nestjs/config";
 import { PrismaModule } from "./prisma/prisma.module";
 import { RmqModule } from "@app/common";
-import { BILLING_SERVICE } from "./constants/constant-service";
+import { BILLING_SERVICE, GGS_SERVICE } from "./constants/constant-service";
+import { ClientsModule, Transport } from "@nestjs/microservices";
 
 @Module({
   imports: [
@@ -14,6 +15,15 @@ import { BILLING_SERVICE } from "./constants/constant-service";
     RmqModule.register({
       name: BILLING_SERVICE, 
     }), 
+    RmqModule.register({
+      name: GGS_SERVICE, 
+    }), 
+    ClientsModule.register([
+      {
+        name: 'VALIDATE',
+        transport: Transport.TCP,
+      },
+    ]),
   ], 
   controllers: [FormController],
   providers: [FormService], 

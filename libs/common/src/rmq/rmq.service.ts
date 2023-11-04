@@ -33,9 +33,9 @@ export class RmqService {
   }
   async assertQueueAndConsume(queueName: string) {
     // console.log(this.configService.get<string>('RABBIT_MQ_URI'));
-    console.log(this.configService.get('RABBIT_MQ_BILLING_QUEUE'))
-    await this.consumeQueue();
-    await this.assertQueue(this.configService.get('RABBIT_MQ_BILLING_QUEUE'),"hhlloo")
+    // console.log(this.configService.get('RABBIT_MQ_BILLING_QUEUE'))
+    // await this.consumeQueue();
+    // await this.assertQueue(this.configService.get('RABBIT_MQ_BILLING_QUEUE'),"hhlloo")
 
   }
   async assertQueue(queueName: string,message:string) {
@@ -63,9 +63,9 @@ export class RmqService {
    
   }
 
-  async consumeQueue() {
+  async consumeQueue(queueName) {
     const senderPhoneNumber = "+12052364971";
-    const queueName = this.configService.get('RABBIT_MQ_BILLING_QUEUE')
+    // const queueName = this.configService.get('RABBIT_MQ_BILLING_QUEUE')
     console.log("mgmgmg");
     console.log("Starting to consume messages from queue:", queueName);
     console.log(queueName);
@@ -92,9 +92,17 @@ export class RmqService {
           console.log(receivedMessage);
           
       console.log("consuming");
-
-               await this.twilioClient.messages
-      .create({ body: "hello1", from: senderPhoneNumber, to:  "+917989747516"});
+        if(queueName === 'billing'){
+          console.log("billing consumer");
+          
+      //     await this.twilioClient.messages
+      // .create({ body: "hello1", from: senderPhoneNumber, to:  "+917989747516"});
+        }
+        else{
+          console.log("pushig to ggs");
+          
+        }
+               
       channel.ack(message);
       }
       //  channel.ack(message);

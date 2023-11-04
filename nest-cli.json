@@ -45,6 +45,15 @@
       "compilerOptions": {
         "tsConfigPath": "apps/validate/tsconfig.app.json"
       }
+    },
+    "ggsheet": {
+      "type": "application",
+      "root": "apps/ggsheet",
+      "entryFile": "main",
+      "sourceRoot": "apps/ggsheet/src",
+      "compilerOptions": {
+        "tsConfigPath": "apps/ggsheet/tsconfig.app.json"
+      }
     }
   }
 }

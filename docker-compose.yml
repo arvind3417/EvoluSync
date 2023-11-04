@@ -28,11 +28,45 @@ services:
     env_file:
       - ./apps/sms/.env
     depends_on:
-      - postgres
+      # - postgres
       - rabbitmq
     volumes:
       - .:/usr/src/app
       - /usr/src/app/node_modules
+    networks:
+      - atlan
+  ggs:
+    build:
+      context: .
+      dockerfile: ./apps/ggsheet/Dockerfile
+      target: development
+    command: npm run start:dev ggsheet
+    env_file:
+      - ./apps/sms/.env
+    depends_on:
+      # - postgres
+      - rabbitmq
+    volumes:
+      - .:/usr/src/app
+      - /usr/src/app/node_modules
+    networks:
+      - atlan
+  validate:
+    build:
+      context: .
+      dockerfile: ./apps/validate/Dockerfile
+      target: development
+    command: npm run start:dev validate
+    # env_file:
+    #   - ./apps/validate/.env
+    # depends_on:
+    #   - postgres
+    #   - rabbitmq
+    volumes:
+      - .:/usr/src/app
+      - /usr/src/app/node_modules
+    ports:
+      - '3002:3002'
     networks:
       - atlan
   postgres:

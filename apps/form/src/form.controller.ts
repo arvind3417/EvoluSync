@@ -1,6 +1,7 @@
 import { Body, Controller, Get, Post } from '@nestjs/common';
 import { FormService } from './form.service';
-import { CreateFormDto } from './dto/form.dto';
+import { ValidateDTO } from './dto/form.dto';
+
 
 @Controller('form')
 export class FormController {
@@ -11,14 +12,14 @@ export class FormController {
     return this.formService.getHello();
   }
   @Post('submit-form')
-  submitForm(@Body() dto:CreateFormDto){
+  submitForm(@Body() dto:ValidateDTO){
     try{
      const res= this.formService.createTodo(dto);
       return res;
       
 
     }catch(e){
-
+      return (e)
     }
   }
 }
