@@ -31,13 +31,7 @@ export class RmqService {
     const originalMessage = context.getMessage();
     channel.ack(originalMessage);
   }
-  async assertQueueAndConsume(queueName: string) {
-    // console.log(this.configService.get<string>('RABBIT_MQ_URI'));
-    // console.log(this.configService.get('RABBIT_MQ_BILLING_QUEUE'))
-    // await this.consumeQueue();
-    // await this.assertQueue(this.configService.get('RABBIT_MQ_BILLING_QUEUE'),"hhlloo")
 
-  }
   async assertQueue(queueName: string,message:string) {
     try {
       const connection = await connect(this.configService.get<string>('RABBIT_MQ_URI'));
@@ -65,7 +59,6 @@ export class RmqService {
 
   async consumeQueue(queueName) {
     const senderPhoneNumber = "+12052364971";
-    // const queueName = this.configService.get('RABBIT_MQ_BILLING_QUEUE')
     console.log("mgmgmg");
     console.log("Starting to consume messages from queue:", queueName);
     console.log(queueName);
